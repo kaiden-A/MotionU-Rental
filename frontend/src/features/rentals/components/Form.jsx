@@ -4,7 +4,7 @@ function Form(){
 
 
     return(
-        <div className="request-form" id="requestForm" style={{display : "none"}}>
+        <div className="request-form" id="requestForm" style={{display : "block"}}>
             <h3 className="form-title">Rental Details</h3>
             <form id="rentalForm">
                 <div className="form-grid">

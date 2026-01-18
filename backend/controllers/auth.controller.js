@@ -16,7 +16,7 @@ export const post_login = catchAsync( async (req , res) => {
         sameSite : process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     })
 
-    res.status(200).json({success : true , message : "Successfully Login"})
+    res.status(200).json({success : true , token : token , message : "Successfully Login"})
 
 })
 
