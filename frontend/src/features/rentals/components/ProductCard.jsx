@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { ChooseContext } from "../../../context/ChooseContext";
 
 
-function ProductsCard({image , name , desc , rate , addProducts}){
+function ProductsCard({image , name , desc , rate , addProducts }){
 
 
     return(

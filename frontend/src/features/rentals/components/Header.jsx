@@ -1,6 +1,18 @@
+import { useContext, useState } from "react";
+import { ChooseContext } from "../../../context/ChooseContext";
 
 
 function Header(){
+
+    const {choose} = useContext(ChooseContext);
+    const [values , setValues] = useState('products')
+
+    const scroll = (value) => {
+        const element = document.getElementById(value);
+        if(element){
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
 
     return(
         <header>
@@ -14,15 +26,15 @@ function Header(){
                     </a>
                     
                     <div className="nav-links">
-                        <a href="#products" className="nav-link active">Products</a>
-                        <a href="#cart" className="nav-link">Rental Cart</a>
-                        <a href="#contact" className="nav-link">Contact</a>
+                        <a  className={`nav-link ${values === 'products' ? 'active' : ''}`} onClick={() => {scroll('products') ; setValues('products')}}>Products</a>
+                        <a  className={`nav-link ${values === 'carts' ? 'active' : ''}`} onClick={() => {scroll('cart') ; setValues('carts')}}>Rental Cart</a>
+                        <a  className={`nav-link ${values === 'contacts' ? 'active' : ''}`} onClick={() => {scroll('contact'); setValues('contacts')}}>Contact</a>
                     </div>
                     
-                    <button className="cart-btn" id="cartBtn">
+                    <button className="cart-btn" id="cartBtn" onClick={() => scroll('cart')}>
                         <i className="fas fa-shopping-cart"></i>
                         <span>Cart</span>
-                        <div className="cart-count" id="cartCount">0</div>
+                        <div className="cart-count" id="cartCount">{choose.length}</div>
                     </button>
                 </div>
             </div>

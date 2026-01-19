@@ -3,10 +3,12 @@ import ProductsCard from "./ProductCard";
 import { getProducts } from "../api/users";
 
 import { ChooseContext } from "../../../context/ChooseContext";
-
+import Notifications from "../../components/Notifications";
 function Products(){
 
     const [products , setProducts] = useState([]);
+    const [noti , setNoti] = useState('');
+    const [currProd , setCurrProd] = useState('');
 
     useEffect(() => {
 
@@ -47,11 +49,21 @@ function Products(){
                 }
             ];
         });
+        setNoti(true);
+        setCurrProd(product.name);
+        
     };
 
 
     return(
         <>
+            {noti && 
+                <Notifications
+                    onClose={() => setNoti(false)}
+                    success={true}
+                    message={`${currProd} Being Add To The Cart`}
+                />
+            }
             <section id="products">
                 <div className="container">
                     <div className="section-header">

@@ -1,6 +1,6 @@
 
 
-function ProductSummary({image , name , rate , quantity}){
+function ProductSummary({image , name , rate , quantity , onDelete , onAdd , onSubstract}){
 
     return(
         <>
@@ -14,15 +14,15 @@ function ProductSummary({image , name , rate , quantity}){
                 </div>
                 <div className="cart-item-actions">
                     <div className="quantity-selector">
-                        <button className="quantity-btn minus">
+                        <button className="quantity-btn minus" onClick={onSubstract}>
                             <i className="fas fa-minus"></i>
                         </button>
                         <span className="quantity">{quantity}</span>
-                        <button className="quantity-btn plus">
+                        <button className="quantity-btn plus" onClick={onAdd}>
                             <i className="fas fa-plus"></i>
                         </button>
                     </div>
-                    <button className="remove-item">
+                    <button className="remove-item" onClick={onDelete}>
                         <i className="fas fa-trash"></i>
                     </button>
                 </div>

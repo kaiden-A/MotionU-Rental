@@ -7,8 +7,35 @@ import ProductSummary from "./ProductSummary";
 
 function Carts(){
 
-    const {choose} = useContext(ChooseContext);
+    const { choose, setChoose } = useContext(ChooseContext);
 
+    const addChoose = (item) => {
+        setChoose(prev =>
+            prev.map(c =>
+            c.productId === item.productId
+                ? { ...c, quantity: c.quantity + 1 }
+                : c
+            )
+        );
+    };
+
+    const subStractChoose = (item) => {
+        setChoose(prev =>
+            prev
+            .map(c =>
+                c.productId === item.productId
+                ? { ...c, quantity: c.quantity - 1 }
+                : c
+            )
+            .filter(c => c.quantity > 0)
+        );
+    };
+
+    const removeChoose = (item) => {
+        setChoose(prev =>
+            prev.filter(c => c.productId !== item.productId)
+        );
+    };
     return(
         <section id="cart">
             <div className="container">
@@ -20,19 +47,22 @@ function Carts(){
                     
                     <div className="cart-content">
                         <div className="cart-items" id="cartItems">
-                            <div className="cart-empty" style={{display : choose.length > 0 ? 'none' : 'display'}}>
+                            <div className="cart-empty" style={{display : choose.length === 0 ? 'block' : 'none'}}>
                                 <i className="fas fa-shopping-cart"></i>
                                 <h3 className="mb-2">Your cart is empty</h3>
                                 <p>Select products from above to start your rental</p>
                             </div>
                             {/* Load Items */}
-                            {choose.map((c , i) => 
+                            {choose.map((c) => 
                                 <ProductSummary
-                                    key={i}
+                                    key={c.productId}
                                     image={c.productImg}
                                     name={c.name}
                                     quantity={c.quantity}
                                     rate={c.ratePerDay}
+                                    onAdd={() => addChoose(c)}
+                                    onSubstract={() => subStractChoose(c)}
+                                    onDelete={() => removeChoose(c)}
                                 />
                             )}
                         </div>
