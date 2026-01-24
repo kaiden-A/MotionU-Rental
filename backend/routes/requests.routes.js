@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { 
+    get_one_request,
     get_request, 
     post_request, 
     update_request 
@@ -10,6 +11,7 @@ const router = Router();
 
 router.get('/' , get_request);
 router.post('/' , post_request);
+router.get('/:id' , get_one_request);
 router.put('/:id' , update_request);
 
 

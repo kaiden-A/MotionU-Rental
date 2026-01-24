@@ -1,12 +1,17 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default async function handler(req , res){
 
-    const backendUrl = process.env.BACKEND_URL;
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
 
     try{
 
         if(req.method === 'GET'){
+
+            const {id} = req.params;
+
             const backendRes = await axios.get(`${backendUrl}/api/products`);
             return res.status(200).json({success : true , products : backendRes.data.products})
         }

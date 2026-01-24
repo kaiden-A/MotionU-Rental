@@ -1,5 +1,5 @@
 import pool from "../config/database.js";
-class ProductRepositories{
+class ProductRepositories {
 
     async getAllProducts(){
 
@@ -27,7 +27,7 @@ class ProductRepositories{
                     name,
                     product_img AS productImg,
                     description,
-                    quantity,
+                    current_quantity AS quantity,
                     rate_per_day AS ratePerDay
                 FROM PRODUCTS
                 WHERE is_active = ?
@@ -38,12 +38,26 @@ class ProductRepositories{
         return rows;
     }
 
+    async addQuantity(productId , quantity){
+
+        const [result] = await pool.query(
+            `
+            UPDATE PRODUCTS
+            SET quantity = ?
+            WHERE product_id = ?
+            `,
+            [quantity , productId]
+        )
+
+        return result.affectedRows > 0;
+    }
+
     async updateQuantity(productId , quantity){
 
         const [result] = await pool.query(
             `
             UPDATE PRODUCTS
-            SET quantity = ? , updated_at = ?
+            SET  current_quantity = ?, updated_at = ?
             WHERE product_id = ?
             `,
             [quantity , new Date() , productId]
@@ -67,14 +81,36 @@ class ProductRepositories{
         return result.affectedRows > 0;
     }
 
-    async createProduct(name , productImg , description , publicId, quantity , rate ){
+    async findProductById(id){
+
+        const [rows] = await pool.query(
+            `
+                SELECT 
+                    product_id AS productId,
+                    name,
+                    product_img AS productImg,
+                    description,
+                    current_quantity AS currentQuantity,
+                    rate_per_day AS ratePerDay
+                FROM PRODUCTS
+                WHERE product_id = ?
+            `,
+            [id]
+        );
+
+        return rows[0];
+
+    }
+
+    async addProduct(name , productImg , description , publicId, quantity , rate ){
 
         const [result] = await pool.query(
             `
-            INSERT INTO PRODUCTS(name , product_img , description , public_id , quantity , rate_per_day , is_active , created_at , updated_at)
-            VALUES( ? , ? , ? , ? ,  ? ,  ? , ? , ? , ?)
+            INSERT INTO PRODUCTS(name , product_img , description , public_id , quantity , current_quantity
+             , rate_per_day , is_active , created_at , updated_at)
+            VALUES( ? , ? , ? , ? ,  ?, ? ,  ? , ? , ? , ?)
             `,
-            [name , productImg , description , publicId, quantity , rate , true, new Date() , new Date() ]
+            [name , productImg , description , publicId, quantity , quantity , rate , true, new Date() , new Date() ]
         )
 
         return result.affectedRows > 0;

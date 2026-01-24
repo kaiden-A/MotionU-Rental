@@ -38,7 +38,7 @@ class RequestRepositories{
             `
             SELECT 
                 r.request_id AS requestId,
-                p.product_id,
+                p.product_id AS productId,
                 p.name,
                 r.customer_email AS email,
                 r.start_date AS startDate,

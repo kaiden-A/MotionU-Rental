@@ -30,3 +30,10 @@ export const get_request = catchAsync( async(req , res) => {
     res.status(200).json({success : true , requests : requests});
 
 })
+
+export const get_one_request = catchAsync( async(req , res) => {
+
+    const request = await requestsServices.getOneRequest(req.params.id);
+    res.status(200).json({success : true , message : request.message , request : request.request});
+
+})

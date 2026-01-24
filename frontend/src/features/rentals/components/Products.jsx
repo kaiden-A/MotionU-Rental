@@ -55,7 +55,7 @@ function Products(){
     };
 
 
-    return(
+    return (
         <>
             {noti && 
                 <Notifications

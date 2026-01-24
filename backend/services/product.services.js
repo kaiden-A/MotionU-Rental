@@ -56,7 +56,7 @@ class ProductServices{
             throw new AppError('Fail Uploading Image to Cloudinary' , 400);
         }
 
-        const product = productRepositories.createProduct(name , uploadedResponses.secure_url , description , uploadedResponses.public_id , quantity , rate);
+        const product = productRepositories.addProduct(name , uploadedResponses.secure_url , description , uploadedResponses.public_id , quantity , rate);
 
         if(!product){
             throw new AppError('Fail Creating The Product' , 400);

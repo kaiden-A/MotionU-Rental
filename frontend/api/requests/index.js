@@ -1,10 +1,17 @@
 import axios from "axios";
 
+
 export default async function handler(req , res) {
-    
+
     const backendUrl = process.env.BACKEND_URL;
 
     try{
+
+        if(req.method === "GET"){
+            
+            const backendRes = await axios.get(`${backendUrl}/api/requests` , {withCredentials : true});
+            res.status(200).json({success : true , request : backendRes.data.request});
+        }
 
         if(req.method === 'POST'){
 
@@ -16,14 +23,9 @@ export default async function handler(req , res) {
 
         }
 
+
+
     }catch(err){
-
-
-        if(err.response.status){
-            return res.status(err.response.status).json({success : false , message : err.response.data?.message || 'Backend Error'})
-        }
-
-        console.error(err.responses.data || err.message);
-        return res.status(500).json({success : false , message : 'Server Error'});
+        console.error(err.response.data || err.message);
     }
 }
