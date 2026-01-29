@@ -7,7 +7,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import productRoutes from './routes/products.routes.js'
 import requestRoutes from './routes/requests.routes.js';
 import authRoutes from './routes/auth.routes.js';
-
+import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
 
@@ -30,7 +30,9 @@ app.get('/' , (req , res) => {
 
 })
 
+
 app.use('/api' , authRoutes)
+app.use('/api/admin' , adminRoutes);
 app.use('/api/products' , productRoutes);
 app.use('/api/requests' , requestRoutes);
 app.use(errorHandler);

@@ -10,8 +10,6 @@ export default async function handler(req , res){
 
         if(req.method === 'GET'){
 
-            const {id} = req.params;
-
             const backendRes = await axios.get(`${backendUrl}/api/products`);
             return res.status(200).json({success : true , products : backendRes.data.products})
         }

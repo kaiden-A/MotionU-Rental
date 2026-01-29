@@ -14,6 +14,21 @@ class AdminRepositories{
         return result.insertId;
     }
 
+    async getDashboardData(){
+
+        const [rows] = await pool.query(
+            `
+            SELECT
+                COUNT(*) AS totalRequest,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END)  AS totalPending,
+                SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS totalApproved
+            FROM RENTAL_REQUESTS
+            `
+        )
+
+        return rows[0];
+    }
+
     async findByEmail(email){
 
         const [rows] = await pool.query(
