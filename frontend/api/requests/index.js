@@ -1,16 +1,22 @@
 import axios from "axios";
-
+import cookie from 'cookie'
 
 export default async function handler(req , res) {
 
-    const backendUrl = process.env.BACKEND_URL;
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
 
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const token = cookies.jwt;
+    if (!token) {
+        return res.status(401).json({ success : false ,  message: "Not logged in" });
+    }
+    
     try{
 
         if(req.method === "GET"){
             
             const backendRes = await axios.get(`${backendUrl}/api/requests` , {withCredentials : true});
-            res.status(200).json({success : true , request : backendRes.data.request});
+            res.status(200).json({success : true , requests : backendRes.data.requests});
         }
 
         if(req.method === 'POST'){
@@ -26,6 +32,6 @@ export default async function handler(req , res) {
 
 
     }catch(err){
-        console.error(err.response.data || err.message);
+        console.error(err.response?.data || err.message);
     }
 }

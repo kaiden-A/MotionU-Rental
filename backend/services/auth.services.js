@@ -44,6 +44,7 @@ class AuthServices{
     async findById(id){
 
         const user = await adminRepositories.findById(id);
+        
 
         if(!user){
             throw new AppError('User Doesnt Exist' , 404);

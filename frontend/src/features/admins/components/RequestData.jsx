@@ -1,6 +1,6 @@
 
 
-function RequestData({id , total , date , personOrder , name }){
+function RequestData({id , total , date , personOrder , name , openDetails}){
 
     return(
         <>
@@ -11,7 +11,7 @@ function RequestData({id , total , date , personOrder , name }){
                 <td>{`RM ${total || 0}`}</td>
                 <td>{date}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline">
+                    <button class="btn btn-sm btn-outline" onClick={openDetails}>
                         <i class="fas fa-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-success" >

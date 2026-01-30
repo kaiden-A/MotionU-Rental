@@ -1,5 +1,5 @@
 
-function ProductsData({imgLink , name , available , rate , category}){
+function ProductsData({imgLink , name , available , rate , category , onDelete}){
 
     return(
         <>
@@ -18,7 +18,7 @@ function ProductsData({imgLink , name , available , rate , category}){
                         <button class="btn btn-sm btn-outline">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger">
+                        <button class="btn btn-sm btn-danger" onClick={onDelete}>
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>

@@ -4,6 +4,6 @@ import requireAuth from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get('/dashboard', get_dashboard);
+router.get('/dashboard' , requireAuth, get_dashboard);
 
 export default router;

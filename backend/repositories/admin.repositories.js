@@ -55,11 +55,12 @@ class AdminRepositories{
                 admin_id AS id ,
                 name,
                 email
-            FROM ADMIN
+            FROM ADMINS
             WHERE admin_id = ? `,
             [id]
         );
 
+    
         return rows[0];
 
     }

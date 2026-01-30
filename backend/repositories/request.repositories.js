@@ -65,12 +65,12 @@ class RequestRepositories{
                 p.product_id,
                 p.name,
                 r.customer_email AS email,
-                r.start_date AS startDate,
-                r.end_date AS endDate,
+                CONCAT(DATE_FORMAT(r.start_date, '%d/%m/%Y'), ' - ', DATE_FORMAT(r.end_date, '%d/%m/%Y')) AS startDate,
+                DATEDIFF(r.end_date, r.start_date) AS durations,
                 r.requested_quantity AS quantity,
                 r.status
             FROM RENTAL_REQUESTS r
-            JOIN PRODUCTS p ON r.product_id = p.product_id
+            JOIN PRODUCTS p ON r.product_id = p.product_id;
             `
         );
 

@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import ProductsData from "./ProductsData";
-import {getProducts} from '../../rentals/api/users';
+import {getProducts } from '../../rentals/api/users.js';
+import { deleteProducts } from "../api/admins.js";
+import AddProducts from "./AddProductsModal";
+import Notifications from '../../components/Notifications';
 
 function Products(){
 
     const [products , setProducts] = useState([]);
+    const [openProd , setProd] = useState(false);
+    const [openNoti , setOpenNoti] = useState(false);
 
     useEffect(() => {
 
@@ -23,12 +28,35 @@ function Products(){
 
     }, [])
 
-    useEffect(() => {
-        console.log(products);
-    }, [products])
+
+    const dltProducts = async (id) => {
+
+        try{
+
+            const res = await deleteProducts(id);
+
+            if(res.data.success){
+                //notifications
+                setOpenNoti(true);
+            }
+
+        }catch(err){
+            console.error(err.response?.data || err.message);
+        }
+
+    }
 
     return(
         <>
+            {
+                openNoti && 
+                <Notifications 
+                    message={'successfully Delete Products'}
+                    onClose={() => setOpenNoti(false)}
+                    success={true}
+                />
+            }
+            { openProd && <AddProducts onClose={() => setProd(false)}/>}
             <div className="tab-content active" id="products">
                 <div className="table-card">
                     <div className="table-header">
@@ -37,7 +65,7 @@ function Products(){
                             <button className="btn btn-outline">
                                 <i className="fas fa-filter"></i> Filter
                             </button>
-                            <button className="btn btn-primary" id="addProductBtn">
+                            <button className="btn btn-primary" onClick={() => setProd(true)}>
                                 <i className="fas fa-plus"></i> Add Product
                             </button>
                         </div>
@@ -66,6 +94,7 @@ function Products(){
                                                 imgLink={p.productImg}
                                                 rate={p.ratePerDay}
                                                 available={p.quantity}
+                                                onDelete={() => dltProducts(p.productId)}
                                             />
                                         )
                                     ) : (

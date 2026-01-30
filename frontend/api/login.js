@@ -5,14 +5,16 @@ export default async function handler(req , res){
     
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
 
-
     try{
 
 
-        const backendRes = await axios.post(`${backendUrl}/api/login` , req.body , {withCredentials : true});
-        const token = backendRes.token;
+        const backendRes = await axios.post(`${backendUrl}/api/login` , req.body);
+        const token = backendRes.data.token;
 
-        res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3000`);
+        res.setHeader(
+            "Set-Cookie",
+            `jwt=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`
+        );
 
         res.status(200).json({ success : true ,  message: "Logged in" });
 

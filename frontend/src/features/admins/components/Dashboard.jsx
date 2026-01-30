@@ -2,17 +2,29 @@ import { useEffect, useState } from "react";
 import Analytics from "./Analystics";
 import Stats from "./Stats";
 import { getDashboardData } from "../api/admins";
-
+import {useNavigate} from 'react-router-dom'
 
 function Dashboard(){
 
     const [stat , setStat] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
 
         const fetchData = async() => {
-            const data = await getDashboardData();
-            setStat(data.data.data)
+
+            try{
+                const data = await getDashboardData();
+                setStat(data.data.data)
+
+            }catch(err){
+                console.error(err.response?.data || err.message);
+
+                if(err.response.status === 401){
+                    navigate('/login')
+                }
+            }
+            
         
         }
 

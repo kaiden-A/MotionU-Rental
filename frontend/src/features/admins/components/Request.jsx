@@ -1,9 +1,43 @@
+import { useEffect } from "react";
 import RequestData from "./RequestData";
+import { getRequests } from "../api/admins";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RequestDetails from "./RequestDetails";
 
 function Request(){
 
+    const [request , setRequest] = useState([]);
+    const [openDetails , setOpenDetails] = useState(false);
+    const [currReq , setCurrReq] = useState({});
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try{
+
+                const res = await getRequests();
+                console.log(res.data);
+                setRequest(res.data.requests);
+                
+            }catch(err){
+
+                if(err.response.status === 401){
+                    navigate('/login')
+                }
+
+                console.error(err.response?.data || err.message);
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
     return(
         <>
+            {openDetails && <RequestDetails requests={currReq} onClose={() => setOpenDetails(false)}/>}
             <div class="tab-content active" id="requests">
                 <div class="tabs">
                     <button class="tab active" data-request-tab="pending">Pending</button>
@@ -28,10 +62,19 @@ function Request(){
                                 </thead>
                                 <tbody>
                                     {/* */}
-                                    <RequestData/>
-                                    <RequestData/>
-                                    <RequestData/>
-                                    <RequestData/>
+                                    {
+                                        request?.map((r,i) => 
+                                            <RequestData 
+                                                key={i}
+                                                id={r.requestId}
+                                                total={r.quantity}
+                                                personOrder={r.email}
+                                                date={r.startDate}
+                                                name={r.name}
+                                                openDetails={() => {setOpenDetails(true) ; setCurrReq(r)}}
+                                            />
+                                        )
+                                    }
 
                                 </tbody>
                             </table>
