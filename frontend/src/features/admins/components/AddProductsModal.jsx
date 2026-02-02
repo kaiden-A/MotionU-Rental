@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { postProducts } from "../api/admins";
+import { useRef } from "react";
 
 
 function AddProducts({onClose}){
@@ -11,6 +12,12 @@ function AddProducts({onClose}){
     const [quantity , setQuantity] = useState(0);
     const [desc , setDesc] = useState("");
     const [imagePreview , setImagePreview] = useState("");
+
+    const fileInputReff = useRef(null);
+
+    const handleClickDiv = () => {
+        fileInputReff.current.click();
+    }
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -113,7 +120,7 @@ function AddProducts({onClose}){
                         
                         <div className="form-group full-width">
                             <label className="form-label">Product Image</label>
-                            <div className="image-upload" id="imageUpload">
+                            <div className="image-upload" id="imageUpload" onClick={handleClickDiv} style={{display : imagePreview ? "none" : "block"}}>
                                 <i className="fas fa-cloud-upload-alt"></i>
                                 <p>Click to upload product image</p>
                                 <p style={{fontSize: "0.875rem" , color: "#64748b" , marginTop: "8px"}}>JPEG, PNG up to 5MB</p>
@@ -121,16 +128,17 @@ function AddProducts({onClose}){
                             <input 
                                 type="file" 
                                 id="imageInput" 
+                                ref={fileInputReff}
                                 accept="image/*"
-                                style={{display: "block"}}
+                                style={{display: "none"}}
                                 onChange={handleImageChange}
                             />
-                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" style={{display : 'block'}} />}
                         </div>
                     </div>
                     
                     <div className="modal-actions">
-                        <button type="button" className="modal-btn secondary" id="cancelProduct">Cancel</button>
+                        <button type="button" className="modal-btn secondary" onClick={onClose}>Cancel</button>
                         <button type="submit" className="modal-btn primary">Add Product</button>
                     </div>
                 </form>

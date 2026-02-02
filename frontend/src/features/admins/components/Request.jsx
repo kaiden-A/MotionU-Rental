@@ -67,7 +67,7 @@ function Request(){
                                             <RequestData 
                                                 key={i}
                                                 id={r.requestId}
-                                                total={r.quantity}
+                                                total={r.amount}
                                                 personOrder={r.email}
                                                 date={r.startDate}
                                                 name={r.name}

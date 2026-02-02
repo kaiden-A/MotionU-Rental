@@ -6,10 +6,12 @@ export const getProducts = async () => {
     return res;
 }
 
-export const createRequest = async (productId , email , start , end , quantity ) => {
+export const createRequest = async (productId , email , start , end , quantity , amount , notes ) => {
 
-    const res = axios.post(`/api/products` , 
-        {productId , email , start , end , quantity }
+    //console.log('send request for ' + productId)
+
+    const res = axios.post(`/api/requests` , 
+        {productId , email , start , end , quantity , amount , notes }
     );
 
     return res;

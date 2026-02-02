@@ -3,9 +3,9 @@ import requestsServices from "../services/requests.services.js";
 
 export const post_request = catchAsync( async(req , res) => {
 
-    const {productId , email , start , end , quantity} = req.body;
+    const {productId , email , start , end , quantity , notes} = req.body;
 
-    await requestsServices.createRequest(productId , email , start , end , quantity);
+    await requestsServices.createRequest(productId , email , start , end , quantity , notes);
 
     res.status(201).json({success : true , message : 'Successfully Create Request'});
 

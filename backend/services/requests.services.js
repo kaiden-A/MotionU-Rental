@@ -2,6 +2,7 @@ import requestRepositories from "../repositories/request.repositories.js";
 import productRepositories from "../repositories/product.repositories.js";
 import AppError from "../utils/AppError.js";
 import sendEmail from '../utils/sendEmail.js';
+import paymentsRepositories from "../repositories/payments.repositories.js";
 
 class RequestServices{
 
@@ -15,7 +16,7 @@ class RequestServices{
         return request;
     }
 
-    async createRequest(productId , email , start , end , quantity ){
+    async createRequest(productId , email , start , end , quantity, notes ){
 
         const product = await productRepositories.findProductById(productId);
 
@@ -23,9 +24,18 @@ class RequestServices{
             throw new AppError(`${product.name} max rent quantity is ${product.quantity}` , 401);
         }
         
-        const postRequest = await requestRepositories.createRequest(productId , email , start , end , quantity);
+        const postRequest = await requestRepositories.createRequest(productId , email , start , end , quantity , notes);
+        
+        // 3. Calculate amount
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        const amount = product.ratePerDay * durationDays;
 
-        if(!postRequest){
+        // 4. Insert payment (single object)
+        const postPayment = await paymentsRepositories.insertPayments({ requestId :  postRequest.id, amount });
+
+        if(!postRequest.affected || !postPayment){
             throw new AppError('Fail Creating The Request' , 401);
         }
 

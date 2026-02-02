@@ -7,13 +7,15 @@ export default async function handler(req , res) {
 
     const cookies = cookie.parse(req.headers.cookie || "");
     const token = cookies.jwt;
-    if (!token) {
-        return res.status(401).json({ success : false ,  message: "Not logged in" });
-    }
+
     
     try{
 
         if(req.method === "GET"){
+
+            if (!token) {
+                return res.status(401).json({ success : false ,  message: "Not logged in" });
+            }
             
             const backendRes = await axios.get(`${backendUrl}/api/requests` , {withCredentials : true});
             res.status(200).json({success : true , requests : backendRes.data.requests});

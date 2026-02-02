@@ -3,11 +3,14 @@ import Form from "./Form";
 import SummaryCart from "./SummaryCart";
 import { ChooseContext } from "../../../context/ChooseContext";
 import ProductSummary from "./ProductSummary";
+import { useState } from "react";
 
 
 function Carts(){
 
     const { choose, setChoose } = useContext(ChooseContext);
+    const [days , setDays] = useState(1);
+
 
     const addChoose = (item) => {
         setChoose(prev =>
@@ -66,8 +69,8 @@ function Carts(){
                                 />
                             )}
                         </div>
-                        { choose.length > 0 && <SummaryCart/>}
-                        {choose.length > 0 && <Form/>}
+                        { choose.length > 0 && <SummaryCart days={days}/>}
+                        {choose.length > 0 && <Form setDays={setDays} days={days}/>}
                     </div>
                 </div>
             </div>

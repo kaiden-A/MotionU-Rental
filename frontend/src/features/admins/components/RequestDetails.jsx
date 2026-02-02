@@ -1,6 +1,12 @@
 
 function RequestDetails({requests , onClose}){
 
+    const statusChecker = {
+        PENDING : 'pending',
+        APPROVED : 'approved',
+        REJECTED :'rejected'
+    }
+
 
     return(
         <>
@@ -30,12 +36,12 @@ function RequestDetails({requests , onClose}){
                         </div>
                         <div className="detail-row">
                             <div className="detail-label">Total Amount:</div>
-                            <div className="detail-value">$322</div>
+                            <div className="detail-value">RM {requests.amount}</div>
                         </div>
                         <div className="detail-row">
                             <div className="detail-label">Status:</div>
                             <div className="detail-value">
-                                <span className="status-badge status-pending">
+                                <span className={`status-badge status-${statusChecker[requests.status]}`}>
                                     {requests.status}
                                 </span>
                             </div>
@@ -44,14 +50,14 @@ function RequestDetails({requests , onClose}){
                             <div className="detail-label">Products:</div>
                             <div className="detail-value">
                                 <ul style={{paddingLeft: "20px"}}>
-                                    <li>Cordless Drill Set (1 x $18/day)</li><li>Tool Kit Set (1 x $28/day)</li>
+                                    <li>{requests.name} ( {requests.quantity} x RM {requests.rate}/day)</li>
                                 </ul>
                             </div>
                         </div>
                     
                             <div className="detail-row">
                                 <div className="detail-label">Customer Notes:</div>
-                                <div className="detail-value">Home renovation project</div>
+                                <div className="detail-value">{requests.note}</div>
                             </div>
                         </div>
                     

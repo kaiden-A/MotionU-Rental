@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ChooseContext } from "../../../context/ChooseContext";
 
-function SummaryCart(){
+function SummaryCart({days}){
 
     const {choose} = useContext(ChooseContext);
 
@@ -19,7 +19,7 @@ function SummaryCart(){
                 </div>
                 <div className="summary-row summary-total">
                     <span>Total</span>
-                    <span id="total">{`RM ${totalToPay.toFixed(2)}`}</span>
+                    <span id="total">{`RM ${totalToPay.toFixed(2) * days}`}</span>
                 </div>
             </div>
         </>
