@@ -4,12 +4,20 @@ import { getRequests } from "../api/admins";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RequestDetails from "./RequestDetails";
+import { useMemo } from "react";
+import ApproveModal from "./ApproveModal";
+import RejectModal from "./RejectModal";
 
 function Request(){
 
     const [request , setRequest] = useState([]);
     const [openDetails , setOpenDetails] = useState(false);
+    const [approve , setApprove] = useState(false);
+    const [reject , setReject] = useState(false);
     const [currReq , setCurrReq] = useState({});
+
+    const [status , setStatus] = useState("PENDING");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,14 +43,32 @@ function Request(){
 
     }, [])
 
+    const usedArray = useMemo(() => {
+        if (!status) return request;
+
+        return request.filter(r => r.status === status);
+    }, [status, request]);
+
+
     return(
         <>
-            {openDetails && <RequestDetails requests={currReq} onClose={() => setOpenDetails(false)}/>}
+            {
+                openDetails && 
+                
+                <RequestDetails 
+                    requests={currReq} 
+                    onClose={() => setOpenDetails(false)}
+                    onApprove={() =>{ setOpenDetails(false) ;setApprove(true)  }}
+                    onReject={() => { setOpenDetails(false); setReject(true)}}
+                />
+            }
+            {approve && <ApproveModal onClose={() => setApprove(false)}/>}
+            {reject && <RejectModal onClose={() => setReject(false)} />}
             <div class="tab-content active" id="requests">
                 <div class="tabs">
-                    <button class="tab active" data-request-tab="pending">Pending</button>
-                    <button class="tab" data-request-tab="approved">Approved</button>
-                    <button class="tab" data-request-tab="rejected">Rejected</button>
+                    <button class={`tab ${status === 'PENDING' ? "active" : ""}`} onClick={() => setStatus("PENDING")}>Pending</button>
+                    <button class={`tab ${status === 'APPROVED' ? "active" : ""}`} onClick={() => setStatus("APPROVED")}>Approved</button>
+                    <button class={`tab ${status === 'REJECTED' ? "active" : ""}`} onClick={() => setStatus("REJECTED")}>Rejected</button>
                     <button class="tab" data-request-tab="completed">Completed</button>
                 </div>
                 
@@ -63,7 +89,7 @@ function Request(){
                                 <tbody>
                                     {/* */}
                                     {
-                                        request?.map((r,i) => 
+                                        usedArray?.map((r,i) => 
                                             <RequestData 
                                                 key={i}
                                                 id={r.requestId}

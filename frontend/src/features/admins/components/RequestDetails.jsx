@@ -1,5 +1,5 @@
 
-function RequestDetails({requests , onClose}){
+function RequestDetails({requests , onClose , onApprove , onReject}){
 
     const statusChecker = {
         PENDING : 'pending',
@@ -62,10 +62,10 @@ function RequestDetails({requests , onClose}){
                         </div>
                     
                     <div className="modal-actions" id="requestActions">
-                            <button className="modal-btn secondary" id="rejectRequestBtn">
+                            <button className="modal-btn secondary" onClick={onReject}>
                                 <i className="fas fa-times"></i> Reject
                             </button>
-                            <button className="modal-btn primary" id="approveRequestBtn">
+                            <button className="modal-btn primary" onClick={onApprove}>
                                 <i className="fas fa-check"></i> Approve
                             </button>
                         </div>

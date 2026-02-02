@@ -14,12 +14,6 @@ function RequestData({id , total , date , personOrder , name , openDetails}){
                     <button class="btn btn-sm btn-outline" onClick={openDetails}>
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-success" >
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" >
-                        <i class="fas fa-times"></i>
-                    </button>
                 </td>
             </tr>
         </>
