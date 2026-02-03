@@ -13,7 +13,7 @@ function ProductsData({imgLink , name , available , rate , category , onDelete})
                     <td>{category}</td>
                     <td>{`RM ${rate}/day`}</td>
                     <td>{`${available} Available`}</td>
-                    <td>28</td>
+                    {/* <td>28</td> */}
                     <td>
                         <button class="btn btn-sm btn-outline">
                             <i class="fas fa-edit"></i>

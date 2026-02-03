@@ -81,7 +81,7 @@ function Products(){
                                     <th>Category</th>
                                     <th>Daily Rate</th>
                                     <th>Availability</th>
-                                    <th>Rental Count</th>
+                                    {/* <th>Rental Count</th> */}
                                     <th>Actions</th>
                                 </tr>
                             </thead>

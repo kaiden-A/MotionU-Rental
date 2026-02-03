@@ -11,7 +11,7 @@ function AdminPage(){
 
 
     return(
-        <div style={{display: "flex" , flexDirection : "row"}}>
+        <div style={{display: "flex" , flexDirection : "row" , minHeight : "100vh"}}>
 
             <Sidebar
                 choose={choose}

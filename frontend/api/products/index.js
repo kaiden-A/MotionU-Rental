@@ -23,7 +23,7 @@ export default async function handler(req , res){
             if (!token) {
                 return res.status(401).json({ success : false ,  message: "Not logged in" });
             }
-            console.log(req.body);
+            
             const backendRes = await axios.post(`${backendUrl}/api/products` , 
                 req.body,
                 {
