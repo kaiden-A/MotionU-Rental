@@ -10,6 +10,7 @@ function Products(){
     const [products , setProducts] = useState([]);
     const [openProd , setProd] = useState(false);
     const [openNoti , setOpenNoti] = useState(false);
+    const [msg , setMsg] = useState("");
 
     useEffect(() => {
 
@@ -37,6 +38,7 @@ function Products(){
 
             if(res.data.success){
                 //notifications
+                setMsg('successfully Delete Products')
                 setOpenNoti(true);
             }
 
@@ -51,7 +53,7 @@ function Products(){
             {
                 openNoti && 
                 <Notifications 
-                    message={'successfully Delete Products'}
+                    message={msg}
                     onClose={() => setOpenNoti(false)}
                     success={true}
                 />

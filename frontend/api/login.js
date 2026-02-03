@@ -3,7 +3,7 @@ import '../config/dotenv.js'
 
 export default async function handler(req , res){
     
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
+    const backendUrl = process.env.BACKEND_URL;
 
     try{
 

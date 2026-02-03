@@ -1,10 +1,14 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
-dotenv.config();
+import cookie from 'cookie';
+import "../../config/dotenv.js";
 
 export default async function handler(req , res){
 
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
+    const backendUrl = process.env.BACKEND_URL;
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const token = cookies.jwt;
+
+    
 
     try{
 
@@ -15,12 +19,22 @@ export default async function handler(req , res){
         }
 
         if(req.method === 'POST'){
+
+            if (!token) {
+                return res.status(401).json({ success : false ,  message: "Not logged in" });
+            }
+            console.log(req.body);
             const backendRes = await axios.post(`${backendUrl}/api/products` , 
                 req.body,
-                {withCredentials : true}
+                {
+                    headers : {
+                    Authorization : `Bearer ${token}`
+                    }
+                }
+                
             );
 
-            return res.status(201).json({sucess : true , message : backendRes.data.message});
+            return res.status(201).json({success : true , message : backendRes.data.message});
 
         }
 

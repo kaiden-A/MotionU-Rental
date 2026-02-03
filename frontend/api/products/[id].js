@@ -1,20 +1,10 @@
-//import formidable from "formidable";
-//import fs from "fs";
 import axios from "axios";
 import cookie from "cookie";
-import dotenv from "dotenv";
-//import FormData from "form-data";
-dotenv.config();
-
-export const config = {
-    api: {
-        bodyParser: false, // important for file uploads
-    },
-};
+import '../../config/dotenv.js'
 
 export default async function handler(req , res){
 
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5050';
+    const backendUrl = process.env.BACKEND_URL ;
     const {id} = req.query;
 
 

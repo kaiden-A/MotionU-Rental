@@ -37,9 +37,8 @@ export const delete_product = catchAsync( async(req , res) => {
 
 export const post_product = catchAsync( async(req , res) => {
 
-    const fileUri = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-    const {name , description , quantity , rate} = req.body;
+    const {name , description , quantity , imgLink , publicId , rate} = req.body;
 
-    await productServices.createProduct(name , fileUri , description , quantity , rate);
+    await productServices.createProduct(name , description , imgLink , publicId , quantity , rate);
     res.status(201).json({success : true , message : 'Successfully Created The product'});
 })

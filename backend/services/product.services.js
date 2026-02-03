@@ -1,4 +1,3 @@
-import cloudinary from "../config/cloudinary.js";
 import productRepositories from "../repositories/product.repositories.js";
 import AppError from "../utils/AppError.js";
 
@@ -46,17 +45,13 @@ class ProductServices{
         return;
     }
 
-    async createProduct(name , fileUri , description , quantity , rate ){
+    async createProduct(name , description , imgLink , publicId , quantity , rate ){
 
-        const uploadedResponses = await cloudinary.uploader.upload(fileUri , {
-            folder : 'rental'
-        })
+        // if(!imgLink.startsWith('https://res.cloudinary.com/')){
+        //     throw new AppError('This image is not from cloudinary' , 404)
+        // }
 
-        if(!uploadedResponses){
-            throw new AppError('Fail Uploading Image to Cloudinary' , 400);
-        }
-
-        const product = productRepositories.addProduct(name , uploadedResponses.secure_url , description , uploadedResponses.public_id , quantity , rate);
+        const product = productRepositories.addProduct(name , imgLink , description , publicId , quantity , rate);
 
         if(!product){
             throw new AppError('Fail Creating The Product' , 400);

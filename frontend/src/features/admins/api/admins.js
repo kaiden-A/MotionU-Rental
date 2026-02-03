@@ -6,10 +6,10 @@ export const getRequests = async () => {
     return res;
 }
 
-export const postProducts = async (formData) => {
+export const postProducts = async ({name , description , quantity , imgLink , publicId ,rate }) => {
     
     const res = await axios.post('/api/products' , 
-        formData , 
+        {name , description , quantity , imgLink , publicId ,rate},
         {withCredentials : true}
     )
 

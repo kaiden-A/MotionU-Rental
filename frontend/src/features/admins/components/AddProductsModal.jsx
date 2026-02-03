@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { postProducts } from "../api/admins";
 import { useRef } from "react";
+import uploadCloudinary from '../../../../utils/uploadCloudinary.js';
+import Notifications from "../../components/Notifications.jsx";
 
-
-function AddProducts({onClose}){
+function AddProducts({onClose , setMsg , setOpenNoti}){
 
     const [name , setName] = useState("");
     const [rate , setRate] = useState("");
-    const [category , setCategory] = useState("");
     const [image , setImage] = useState("");
     const [quantity , setQuantity] = useState(0);
     const [desc , setDesc] = useState("");
     const [imagePreview , setImagePreview] = useState("");
+
 
     const fileInputReff = useRef(null);
 
@@ -27,30 +28,44 @@ function AddProducts({onClose}){
 
 
     const sendForm = async (e) => {
+
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("rate", rate);
-        formData.append("category", category);
-        formData.append("quantity", quantity);
-        formData.append("desc", desc);
-        if (image) formData.append("image", image); // attach file
+        try{
 
-        try {
-            const res = await postProducts(formData);
+            let imageUrl = null;
+            let publicId = null;
 
-            if (res.data.success) {
+            if(image){
+                const uploadRes = await uploadCloudinary(image);
+                imageUrl = uploadRes.secure_url;
+                publicId = uploadRes.public_id;
+            }
+
+            const res = await postProducts({
+                name,
+                description : desc ,
+                quantity,
+                imgLink : imageUrl,
+                publicId,
+                rate
+            });
+
+            if(res.data.success){
+                setMsg('successfully Add Products');
+                setOpenNoti(true);
                 onClose();
             }
-        } catch (err) {
+
+
+        }catch(err){
             console.error(err.response?.data || err.message);
         }
-    };
+
+    }
 
     return(
         <>
-
         <div className="modal" style={{display : "flex"}}>
             <div className="modal-content">
                 <div className="modal-header">
@@ -68,21 +83,6 @@ function AddProducts({onClose}){
                                 required
                                 onChange={(e) => setName(e.target.value)}    
                             />
-                        </div>
-                        
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="productCategory">Category *</label>
-                            <select 
-                                id="productCategory" 
-                                onChange={(e) => setCategory(e.target.value)} 
-                                className="form-select" required
-                            >
-                                <option value="" disabled>Select Category</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="tools">Tools</option>
-                                <option value="outdoor">Outdoor</option>
-                                <option value="party">Party & Events</option>
-                            </select>
                         </div>
                         
                         <div className="form-group">
