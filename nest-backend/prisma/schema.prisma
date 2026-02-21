@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  createdAt    DateTime        @default(now())
+
+  rentalRequests RentalRequest[]
+
+  @@map("admins")
+}
+
+model Product {
+  id          String                  @id @default(uuid())
+  name        String
+  description String?
+  quantity    Int
+  ratePerDay  Decimal                 @db.Decimal(10, 2)
+  isActive    Boolean                 @default(true)
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  rentalItems RentalRequestProduct[]
+
+  @@map("products")
+}
+
+model RentalRequest {
+  id             String                  @id @default(uuid())
+  customerEmail  String
+  startDate      DateTime
+  endDate        DateTime
+
+  status         RentalStatus            @default(PENDING)
+
+  adminId        String?
+  admin          Admin?                  @relation(fields: [adminId], references: [id])
+
+  adminNote      String?
+
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+
+  products       RentalRequestProduct[]
+  payments       Payment[]
+
+  @@map("rental_requests")
+}
+
+model RentalRequestProduct {
+  rentalRequestId String
+  productId       String
+
+  requestedQuantity Int
+
+  rentalRequest RentalRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
+  product        Product       @relation(fields: [productId], references: [id])
+
+  @@id([rentalRequestId, productId])
+  @@map("rental_request_products")
+}
+
+model Payment {
+  id                     String          @id @default(uuid())
+  rentalRequestId        String
+
+  amount                 Decimal         @db.Decimal(10, 2)
+  paymentMethod          PaymentMethod
+  paymentStatus          PaymentStatus    @default(PENDING)
+
+  transactionReference   String?
+  paidAt                 DateTime?
+
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+
+  rentalRequest RentalRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum RentalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CARD
+  E_WALLET
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
