@@ -7,6 +7,9 @@ export class CreateProductDto{
 
     @IsString()
     description: string;
+
+    @IsString()
+    productLink: string;
     
     @IsInt()
     @Min(0)
