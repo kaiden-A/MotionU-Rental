@@ -9,7 +9,10 @@ export class CreateProductDto{
     description: string;
 
     @IsString()
-    productLink: string;
+    imgLink: string;
+
+    @IsString()
+    publicId : string;
     
     @IsInt()
     @Min(0)

@@ -19,6 +19,24 @@ export class ProductsService {
         }
     }
 
+    async findActive(){
+        return this.prisma.product.findMany({where : {isActive : true}})
+    }
+
+    async updateQuantity(id : string , quantity : number){
+        return this.prisma.product.update({
+            where : {id},
+            data : {quantity}
+        })
+    }
+
+    async softDelete(id : string){
+        return this.prisma.product.update({
+            where : {id},
+            data : {isActive : false}
+        })
+    }
+
     async create(product : CreateProductDto){
         return this.prisma.product.create({
             data : {

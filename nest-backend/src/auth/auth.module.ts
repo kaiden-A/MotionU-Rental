@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthGuard } from './auth.guard';
+import { JwtAuthGuard } from './auth.guard';
 
 
 @Module({
@@ -15,6 +15,7 @@ import { AuthGuard } from './auth.guard';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
+        global : true,
         secret: config.getOrThrow('JWT_SECRET'),
         signOptions: { expiresIn: '1d' },
       }),
@@ -22,7 +23,7 @@ import { AuthGuard } from './auth.guard';
         
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports : [AuthGuard]
+  providers: [AuthService , JwtAuthGuard],
+  exports : [JwtAuthGuard , JwtModule]
 })
 export class AuthModule {}
