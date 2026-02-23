@@ -1,18 +1,22 @@
-import { IsDate, IsString } from "class-validator";
+import { IsDate, IsEmail, IsArray, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { RentalRequestProductDto } from "./rental-request-products.dto";
 
-export class CreateRequestDto{
+export class CreateRequestDto {
 
-    @IsString()
-    id : string;
+  @IsEmail()
+  customerEmail: string;
 
-    @IsString()
-    customerEmail : string;
+  @IsDate()
+  @Type(() => Date)
+  startDate: Date;
 
-    @IsDate()
-    startDate : Date;
+  @IsDate()
+  @Type(() => Date)
+  endDate: Date;
 
-    @IsDate()
-    endDate : Date;
-
-
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => RentalRequestProductDto)
+  products: RentalRequestProductDto[];
 }
