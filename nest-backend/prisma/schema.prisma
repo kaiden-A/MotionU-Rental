@@ -48,6 +48,8 @@ model RentalRequest {
   customerEmail  String
   startDate      DateTime
   endDate        DateTime
+  returnDate     DateTime?
+  timeReturn     DateTime?
 
   status         RentalStatus            @default(PENDING)
 

@@ -11,6 +11,7 @@ export function rentalRequestSummaryTemplate(params: {
   startDate: Date;
   endDate: Date;
   rentalDays: number;
+  status : string,
   products: RentalRequestEmailProduct[];
   totalAmount: number;
 }) {
@@ -19,6 +20,7 @@ export function rentalRequestSummaryTemplate(params: {
     startDate,
     endDate,
     rentalDays,
+    status,
     products,
     totalAmount,
   } = params;
@@ -64,7 +66,7 @@ export function rentalRequestSummaryTemplate(params: {
     </p>
 
     <p>
-      Status: <strong>PENDING</strong><br/>
+      Status: <strong>${status}</strong><br/>
       We will notify you once your request has been reviewed.
     </p>
 
